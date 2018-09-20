@@ -45,43 +45,36 @@ if($isV4installed -eq 1 -and $isV4release -eq 378389)
 
     if($version -lt 3)
     {
-        #$executingScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-        #$scriptPath = Join-Path $executingScriptDirectory "PowershellUpdate.ps1"
-        #Invoke-Expression ".\$scriptPath"
 	    LogWrite "if Powershell version > 3 then updating to PS version 5"
         .\PowershellUpdate.ps1
     }
 
     esle{
-        #DotNet 4.5 and PS is higher than 3 then start the other software installation...
-        #$executingScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-        #$scriptPath = Join-Path $executingScriptDirectory "InstallOtherSoftware.ps1"
-        #Invoke-Expression ".\$scriptPath"
 	    LogWrite "if Powershell version < 3 then Install other suporting software"
         .\InstallOtherSoftware.ps1
     }
 }
 else{
-            LogWrite " Dot net 4.5 not available, so Installing Dot net framework 4.5.."        
-            $TempDirectory = $JsonObject.SoftwareSourcePath[0].path
-            $currentDirectory = $JsonObject.currentDirectory[0].path
-            Write-Host "Installing Dot net framework 4.5..." -NoNewline
-            $dotnetV4 = "$TempDirectory\dotnetfx45_full_x86_x64"
-	        $ExitCode = (Start-Process -FilePath "$dotnetV4" -ArgumentList "/quiet" -Wait -PassThru).ExitCode	
-		    if ($ExitCode -eq 0) {
-            Write-Host 'Installed!' -ForegroundColor Green
-            LogWrite "Installed Dot net framework 4.5.." 
-            $regvalue =  $currentDirectory+"PowershellUpdate.ps1"
-             LogWrite "Register the PowershellUpdate in registry"
+        LogWrite " Dot net 4.5 not available, so Installing Dot net framework 4.5.."        
+        $TempDirectory = $JsonObject.SoftwareSourcePath[0].path
+        $currentDirectory = $JsonObject.currentDirectory[0].path
+        Write-Host "Installing Dot net framework 4.5..." -NoNewline
+        $dotnetV4 = "$TempDirectory\dotnetfx45_full_x86_x64"
+        $ExitCode = (Start-Process -FilePath "$dotnetV4" -ArgumentList "/quiet" -Wait -PassThru).ExitCode	
+        if ($ExitCode -eq 0) {
+        Write-Host 'Installed!' -ForegroundColor Green
+        LogWrite "Installed Dot net framework 4.5.." 
+        $regvalue =  $currentDirectory+"PowershellUpdate.ps1"
+            LogWrite "Register the PowershellUpdate in registry"
 
-            New-ItemProperty -Path 'hklm:\software\Microsoft\Windows\CurrentVersion\Run' -name "PowershellUpdate" -value $regvalue
-              LogWrite "Restart System"
+        New-ItemProperty -Path 'hklm:\software\Microsoft\Windows\CurrentVersion\Run' -name "PowershellUpdate" -value $regvalue
+            LogWrite "Restart System"
 
-            Restart-Computer
-            }
-	    else{
-            LogWrite "Dot net framework 4.5 installation error" 
-	        Write-Host 'Frame Work not installed please try again later!' -ForegroundColor Yellow
-            exit
-        }
+        Restart-Computer
+    }
+    else{
+        LogWrite "Dot net framework 4.5 installation error" 
+        Write-Host 'Frame Work not installed please try again later!' -ForegroundColor Yellow
+        exit
+    }
 }

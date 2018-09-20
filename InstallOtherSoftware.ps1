@@ -22,35 +22,6 @@ LogWrite "In the Install OtherSoftware Script"
     Write-Host "Removed the InstallOtherSoftware Key from Registry!" -ForegroundColor Yellow
     LogWrite "Removed the InstallOtherSoftware Key from Registry!"
 
-#}
-
-
-#$jsonData = (Get-Content "config.json" | Out-String)
-
-<#
-$version = $PSVersionTable.PSVersion.Major
-
-#LogWrite "checking the PS version"
-if($version -lt 3)
-{
-        #Start:: Json data to PSObject 
-        function ConvertFrom_Json([string] $JsonData){
-            [System.Reflection.Assembly]::LoadWithPartialName("System.Web.Extensions") | out-null
-            $ser = New-Object System.Web.Script.Serialization.JavaScriptSerializer
-            write-output (new-object -type PSObject -property $ser.DeserializeObject($JsonData))
-        }
-        #End:: Json data to PSObject 
-
-        $JsonObject = ConvertFrom_Json $JsonData
-}
-else{
-        #$JsonData = (Get-Content "D:\ITInfra\OfficeBoxEnvironment\OFFICEBOXSETUP\Script\config.json" -Raw)
-        $jsonData = (Get-Content "config.json" -Raw)
-        $JsonObject = Microsoft.PowerShell.Utility\ConvertFrom-Json -InputObject $JsonData
-}
-
-#>
-
 $TempDirectory = $JsonObject.SoftwareSourcePath.path
 $destinationDatabasePath = $JsonObject.DatabaseDestinationpath.path
 $MySQLDestinationPath = $JsonObject.MySQLDestinationpath.path
@@ -187,27 +158,6 @@ Function Install_CrystalRepoort {
         Write-Host "failed. There was a problem installing Crystal Repoort (SAP). MsiExec returned exit code $ExitCode." -ForegroundColor Red
     }
 }
-
-<#
-Function Install_Mysql{
-     Write-Host 'Installing Mysql... ' -NoNewline
-
-    $mysql = """$TempDirectory\mysql-5.5.15-win32.msi"""
-	$ExitCode = (Start-Process -filepath msiexec -argumentlist "/i $mysql /log $logfiles\mysqllog.txt /norestart" -Wait -PassThru).ExitCode
-    
-    if ($ExitCode -eq 0) {
-        Write-Host 'Installed!' -ForegroundColor Green
-    } 
-    else {
-        Write-Host "failed. There was a problem installing Mysql. MsiExec returned exit code $ExitCode." -ForegroundColor Red
-        Clean-Up
-        if ($RunScriptSilent -NE $True){
-            Read-Host 'Press [Enter] to exit'
-        }
-	    exit
-    }
-}
-#>
 
 Function Install_Mysql_ODBC_Connector{
      Write-Host 'Installing Mysql connector-odbc... ' -NoNewline
