@@ -1,0 +1,47 @@
+{
+	"ApplicationPoolName":[
+		{"AppPool": "ApplicationPoolName"}
+	],
+	"WebSite":[
+		{"SiteName": "SiteName"}
+	],
+	"WebSiteSourcePath":[
+			{"path": "D:\\INSTALLATION\\WebSiteZip\\"}
+	],
+	
+	"DatabaseSourcePath":[
+		{"path": "D:\\INSTALLATION\\DBZIP\\"}
+	],
+	
+	"SoftwareSourcepath":[
+		{"path": "D:\\INSTALLATION\\soft\\"}
+	],
+	"WebSiteDestinationpath":[
+		{"path": "D:\\Inetpub\\wwwroot\\"}
+	],
+	
+	"DatabaseDestinationpath":[
+		{"path": "D:\\DB\\"}
+	],
+	
+	"MySQLDestinationpath":[
+		{"path": "D:\\MySql\\"}
+	],
+	"MysqlDatabaseName":[
+		{"DBName": "EmployeeDatabase"},
+		{"DBName": "CustomerDatabase"}
+	],
+	"MySQLHostName":[
+		{"HostName":"localhost"}
+	],
+	"MySQLCredentials" : [
+		{"DBUsername" : "root"}
+	],
+	"Logpath":[
+		{"path": "D:\\INSTALLATION\\Log\\"}
+	],
+	"currentDirectory":[
+		{"path": "D:\\INSTALLATION\\Script\\"}
+	]
+	
+}

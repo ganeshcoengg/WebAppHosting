@@ -1,0 +1,19 @@
+<<<<<<< HEAD
+# **** Web Application Hosting on the Windows Server 2008 R2
+One Click Server installation. 
+It include the software installation, 
+IIS configuration, 
+MySql Installation, 
+Database creation and restoration
+6). End
+=======
+# Web-Application Hosting
+
+This Application is for configuration of web application on windows server 2008R2,
+IT include:
+1). software installation(Required Softwares)
+2). MySQL installation
+3). Database restoration
+4). IIS Configuration
+5). Site Creation on IIS 
+>>>>>>> parent of cec1b1b... #Read me fie
