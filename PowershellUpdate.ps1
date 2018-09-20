@@ -37,10 +37,7 @@ if($version -lt 3)
     LogWrite " Register the  InstallOtherSoftware in registry"
     New-ItemProperty -Path 'hklm:\software\Microsoft\Windows\CurrentVersion\Run' -name "InstallOtherSoftware" -value $regvalue
 
-    #wusa.exe $softwarepath\Win7AndW2K8R2-KB3134760-x64.msu /quiet
-   
     $PSupdate = "$softwarepath\Win7AndW2K8R2-KB3134760-x64.msu"
-
     $ExitCode = (Start-Process -filepath wusa.exe -argumentlist "/i $PSupdate /quiet" -Wait -PassThru).ExitCode
 
     if ($ExitCode -eq 0) {

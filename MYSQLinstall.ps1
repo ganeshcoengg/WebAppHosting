@@ -22,19 +22,5 @@ Function Install_Mysql{
 
     & cmd.exe /c  $gotoBinPath\mysqld --install MySQL --defaults-file="$defaults_file"
     & cmd.exe /c  net start MySQL
-
-
-     #set the Env path for the MySQL to Environment veriable
-     #$env:path = $env:path + $gotoBinPath
-    #Code for the changing the root password
-
-    #& cmd.exe /c  $gotoBinPath\mysql -uroot 
-     #"SET PASSWORD for 'root'@localhost' = PASSWORD('admin')"
-    <#Code for the changing the root password #>
-
-   # & cmd.exe /c  $changePath\mysql -uroot 
-    # "SET PASSWORD for 'root'@localhost' = PASSWORD('admin')"
-     #set password for 'root'@'localhost' = Password('admin');
-     #>
 }
 Install_Mysql
