@@ -1,7 +1,6 @@
 
 $jsonData = (Get-Content "config.json" -Raw)
 $JsonObject = Microsoft.PowerShell.Utility\ConvertFrom-Json -InputObject $JsonData
-
 $DatabaseNames = $JsonObject.MysqlDatabaseName
 $databasePath	=	$JsonObject.DatabaseDestinationpath.path
 $DBServer = $JsonObject.MySQLHostName.HostName
@@ -9,27 +8,21 @@ $userName = $JsonObject.MySQLCredentials.DBUsername
 $MySQLDestinationPath = $JsonObject.MySQLDestinationpath.path
 $gotoBinPath = $MySQLDestinationPath +"MySQL\bin"
 $progesscount = 1
-
 $cd = $JsonObject.currentDirectory.path
 Set-Location -Path $cd
-
 $userPassword = 'admin'
 
 Function RestoreDatabase {
         param([String] $dbName)
-        #Invoke-Expression -Command:
-        $sqlfile = $databasePath+$dbName+'.sql'
-       & cmd.exe /c "mysql -h $DBServer -u $userName ""-p$userPassword"" $dbName < $sqlfile"
+    #Invoke-Expression -Command:
+    $sqlfile = $databasePath+$dbName+'.sql'
+    & cmd.exe /c "mysql -h $DBServer -u $userName ""-p$userPassword"" $dbName < $sqlfile"
 }
 
 Function CreateDatabases{
-        param([String] $dbName)
+    param([String] $dbName)
 
-        #Write-host "creating database $databaseName..." -NoNewline
-        .\mysql.exe -h $DBServer -u $userName "-p$userPassword" -e "CREATE DATABASE IF NOT EXISTS $dbName"
-        #mysql -h $DBServer -u $userName $userPassword  "show database like '$databaseName'"
-
-        
+    .\mysql.exe -h $DBServer -u $userName "-p$userPassword" -e "CREATE DATABASE IF NOT EXISTS $dbName"
 }
 
 foreach($databaseName in $DatabaseNames){	
@@ -42,9 +35,9 @@ foreach($databaseName in $DatabaseNames){
         CreateDatabases $dbName
     }
     #check database created or not 
-        if(.\mysql.exe -h $DBServer -u $userName "-p$userPassword" -e "SHOW DATABASES like'$dbName'"){
-            RestoreDatabase $dbName
-        }
+    if(.\mysql.exe -h $DBServer -u $userName "-p$userPassword" -e "SHOW DATABASES like'$dbName'"){
+        RestoreDatabase $dbName
+    }
     $progesscount++
 }
 Set-Location -Path $cd

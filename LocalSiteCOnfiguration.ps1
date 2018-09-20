@@ -14,9 +14,7 @@ $ideltimeout = 360
 $enable32BitAppOnWin64 = 1
 $loadUserProfile = 0
 $connectionTimeout = 3600
-
 #End::
-
 
 $cd = $JsonObject.currentDirectory.path
 
@@ -35,48 +33,46 @@ LogWrite "In LocalSiteConfiguration"
          Param([string] $appPoolName)
 
         LogWrite "Creating Application pool"
-
-         if(Test-Path ("IIS:\AppPools\" + $appPoolName)) {
-             Write-Host "The App Pool $appPoolName already exists" -ForegroundColor Yellow
-         LogWrite "The App Pool $appPoolName already exists"
-
-         }
+        if(Test-Path ("IIS:\AppPools\" + $appPoolName)) {
+            Write-Host "The App Pool $appPoolName already exists" -ForegroundColor Yellow
+        LogWrite "The App Pool $appPoolName already exists"
+        }
         else{
              $appPool = New-WebAppPool -Name $appPoolName
-         }
-     }
+        }
+}
 
  #set the properties for the application pool.+
- Function SetProperties {
-         Param([string] $appPoolName,
-               [string] $managedRuntimeVersion,
-               [bool]$enable32BitAppOnWin64)
-        LogWrite "Set the Properties Application pool"
-        
-         Set-ItemProperty IIS:\AppPools\$appPoolName managedRuntimeVersion  $managedRuntimeVersion
-         Set-ItemProperty IIS:\AppPools\$appPoolName processModel.idleTimeout -value ( [TimeSpan]::FromMinutes($ideltimeout))
-         #Set-ItemProperty IIS:\AppPools\$appPoolName processModel.loadUserProfile $loadUserProfile
-         if ($enable32BitAppOnWin64)
-         {
-              Set-ItemProperty IIS:\AppPools\$appPoolName enable32BitAppOnWin64 $enable32BitAppOnWin64 
-         }
-     }
+Function SetProperties {
+     Param([string] $appPoolName,
+        [string] $managedRuntimeVersion,
+        [bool]$enable32BitAppOnWin64)
+    
+    LogWrite "Set the Properties Application pool"
+    Set-ItemProperty IIS:\AppPools\$appPoolName managedRuntimeVersion  $managedRuntimeVersion
+    Set-ItemProperty IIS:\AppPools\$appPoolName processModel.idleTimeout -value ( [TimeSpan]::FromMinutes($ideltimeout))
+    #Set-ItemProperty IIS:\AppPools\$appPoolName processModel.loadUserProfile $loadUserProfile
+    if ($enable32BitAppOnWin64)
+    {
+             Set-ItemProperty IIS:\AppPools\$appPoolName enable32BitAppOnWin64 $enable32BitAppOnWin64 
+    }
+}
 
  Function CreateWebApp {
-          Param([string] $WebSiteName,
-                [string] $WebAppName,
-                [string] $WebSitePath
-                 )
-        LogWrite "Create Web Application"
+         Param([string] $WebSiteName,
+               [string] $WebAppName,
+               [string] $WebSitePath
+    )
+    LogWrite "Create Web Application"
 
-          if (Test-Path ("IIS:\Sites\$WebSiteName\$WebAppName")){
-              Write-Host "Web App $WebAppName already exists" -ForegroundColor Yellow
-              return
-             }
-          else {
-              New-WebApplication -Site $WebSiteName -name $WebAppName  -PhysicalPath $WebSitePath -ApplicationPool $WebAppName
-             }
-          }
+    if (Test-Path ("IIS:\Sites\$WebSiteName\$WebAppName")){
+        Write-Host "Web App $WebAppName already exists" -ForegroundColor Yellow
+       return
+    }
+    else {
+        New-WebApplication -Site $WebSiteName -name $WebAppName  -PhysicalPath $WebSitePath -ApplicationPool $WebAppName
+    }
+}
 
  #Create the site by passing Website Name, Application pool name and physical path
  Function CreateWebSite{
